@@ -1,0 +1,32 @@
+.message {
+  margin: 10px 0;
+  max-width: min(70%, 450px);
+
+  &.own {
+    margin-left: auto;
+  }
+
+  &-content {
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 15px;
+  }
+
+  &.own &-content {
+    background: #e3f2fd;
+  }
+
+  .text {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 5px;
+  }
+}
+

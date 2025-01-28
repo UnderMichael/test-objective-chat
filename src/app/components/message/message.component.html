@@ -1,0 +1,11 @@
+<div
+  class="message"
+  [class.own]="message.from === chatService.userId">
+  <div class="message-content">
+    <div class="text">{{ message.text }}</div>
+    <div class="meta">
+      <span class="author">{{ chatService.getTabName(message.from) }}</span>
+      <span class="time">{{ message.createdAt | date:'HH:mm' }}</span>
+    </div>
+  </div>
+</div>
