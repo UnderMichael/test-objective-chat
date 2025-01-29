@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {StorageKeysEnum} from '../constants/storage-keys.enum';
 import {IMessage} from '../constants/message.interface';
-import {BehaviorSubject, fromEvent, map, Observable} from 'rxjs';
+import {BehaviorSubject, fromEvent, map} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,17 +9,15 @@ import {BehaviorSubject, fromEvent, map, Observable} from 'rxjs';
 export class ChatService {
   userId?: number;
 
-  messages$ = new BehaviorSubject<IMessage[]>(this.messages);
+  messages$: BehaviorSubject<IMessage[]> = new BehaviorSubject<IMessage[]>(this.messages);
   private readonly typingState$ = new BehaviorSubject<Array<number>>(this.typingState);
+  readonly typingStateObservable$ = this.typingState$.pipe(
+    map(res => this.formatTypingMessage(res.filter(id => id !== this.userId)),
+    ),
+  );
 
-  get typingStateObservable(): Observable<string> {
-    return this.typingState$.pipe(
-      map(res => this.formatTypingMessage(res.filter(id => id !== this.userId)),
-      ),
-    );
-  }
 
-  setIsTyping(isTyping: boolean) {
+  setIsTyping(isTyping: boolean): void {
     const newValue = this.typingState.filter((v) => v !== this.userId);
     if (isTyping && this.userId) {
       newValue.push(this.userId);
@@ -78,12 +76,12 @@ export class ChatService {
     return JSON.parse(localStorage.getItem(StorageKeysEnum.MESSAGES) ?? '[]');
   }
 
-  removeUser() {
+  removeUser(): void {
     const oldList = this.userList;
     this.userList = oldList.filter((value: any) => value !== this.userId);
   }
 
-  private initializeUser() {
+  private initializeUser(): void {
     let i = 1;
     while (this.userList?.length && !this.userId) {
       if (this.userList.includes(i)) {
@@ -103,7 +101,7 @@ export class ChatService {
     this.setIsTyping(false);
   }
 
-  getTabName(tabId: any) {
+  getTabName(tabId: any): string {
     return `Вкладка № ${tabId}`;
   }
 }

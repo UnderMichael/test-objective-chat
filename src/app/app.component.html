@@ -18,18 +18,18 @@
 
       }
     </div>
-    @if (chatService.typingStateObservable | async; as typings) {
+    @if (chatService.typingStateObservable$ | async; as typings) {
       <div class="typing-indicator">
         <span class="typing-indicator__text">{{ typings }}</span>
       </div>
     }
 
-    <form class="input-area">
+    <form class="input-area" (submit)="sendMessage($event)">
       <mat-form-field class="input-area__field" appearance="fill">
         <input matInput [formControl]="newMessage" placeholder="Ваше сообщение">
       </mat-form-field>
-      <button class="input-area__button" mat-raised-button color="primary" type="button" [disabled]="!newMessage.value"
-              (click)="sendMessage()">
+      <button class="input-area__button" mat-raised-button color="primary" type="submit" [disabled]="!newMessage.value"
+      >
         <mat-icon fontIcon="send"></mat-icon>
       </button>
     </form>
